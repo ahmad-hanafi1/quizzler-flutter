@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'quiz.dart';
-import 'question.dart';
 
 Quiz quiz = Quiz();
 
@@ -30,6 +29,17 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scorePoints = [];
+
+  void markAnswer(userPickedAnswer) {
+    setState(() {
+      if (quiz.checkAnswer() == userPickedAnswer) {
+        scorePoints.add(Icon(Icons.check, color: Colors.green));
+      } else {
+        scorePoints.add(Icon(Icons.close, color: Colors.red));
+      }
+      quiz.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,18 +78,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                if (quiz.checkAnswer() == true) {
-                  setState(() {
-                    scorePoints.add(Icon(Icons.check, color: Colors.green));
-                  });
-                } else {
-                  setState(() {
-                    scorePoints.add(Icon(Icons.close, color: Colors.red));
-                  });
-                }
-                setState(() {
-                  quiz.nextQuestion();
-                });
+                markAnswer(true);
               },
             ),
           ),
@@ -97,18 +96,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (quiz.checkAnswer() == false) {
-                  setState(() {
-                    scorePoints.add(Icon(Icons.check, color: Colors.green));
-                  });
-                } else {
-                  setState(() {
-                    scorePoints.add(Icon(Icons.close, color: Colors.red));
-                  });
-                }
-                setState(() {
-                  quiz.nextQuestion();
-                });
+                markAnswer(false);
               },
             ),
           ),
